@@ -82,6 +82,10 @@ public class Student {
         return athletic;
     }
 
+    public BigDecimal getGpa() {
+        return gpa;
+    }
+
     public boolean isFullScholarship() {
         return fullScholarship;
     }

@@ -31,9 +31,10 @@ public class StudentsGenerator {
             pst.setString(3, surnames[ThreadLocalRandom.current().nextInt(0, surnames.length)]);
             int age = ThreadLocalRandom.current().nextInt(18, 30);
             pst.setInt(5, age);
-            if (age != 18) {
+            Year yr = Year.values()[ThreadLocalRandom.current().nextInt(0, Year.values().length)];
+            if (age != 18 && !yr.equals(Year.FRESHMAN)) {
                 pst.setBigDecimal(4, new BigDecimal((double) ThreadLocalRandom.current().nextInt(200, 401) / 100));
-                pst.setString(7, String.valueOf(Year.values()[ThreadLocalRandom.current().nextInt(0, Year.values().length)]));
+                pst.setString(7, String.valueOf(yr));
             } else {
                 pst.setBigDecimal(4, new BigDecimal(0.00));
                 pst.setString(7, String.valueOf(Year.FRESHMAN));

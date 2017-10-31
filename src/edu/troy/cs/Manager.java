@@ -41,7 +41,7 @@ public class Manager {
     public void getPuntuationToAll() throws StudentConnectionException {
         try {
             Connection dbConnection = DBConnector.getConnection();
-            String checkIDinDB = "SELECT * FROM student";
+            String checkIDinDB = "SELECT * FROM student WHERE puntuation IS NULL";
             Statement st = dbConnection.createStatement();
             ResultSet result = st.executeQuery(checkIDinDB);
             int ret;

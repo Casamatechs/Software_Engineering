@@ -14,7 +14,6 @@ public class StudentsGenerator {
     private static String[] surnames = {"Harrell", "Moore", "Knopps", "Erskine", "Goodson", "Wisenhunt", "Brock", "Bradley", "Trimble", "Kane", "Cole", "Trusty", "Zucher", "Plump", "Phillips", "Dubos", "Pearce", "Robinson", "Ledbetter", "Robinson", "Rife", "Monsees", "Loklier", "Kaye", "Hilton", "Newman", "Heath", "Ainsworth", "Woods", "Brown", "Jacob", "Williams", "Mac", "Lewis", "Sandfler", "Boggus", "Goodson", "Whigham", "Jernigan", "Henson", "Walker", "Morris", "Potter", "Weasly", "Pearce", "Tomlin", "Mills", "Hoff"};
 
     public static void generator() throws SQLException, IOException, ClassNotFoundException {
-        Connection connection = DBConnector.getConnection();
         Connection dbConnection = DBConnector.getConnection();
         String checkIDinDB = "SELECT * FROM student ORDER BY id_student DESC";
         Statement st = dbConnection.createStatement();

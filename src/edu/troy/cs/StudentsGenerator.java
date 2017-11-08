@@ -24,9 +24,10 @@ public class StudentsGenerator {
         for (int i = 0; i < 500; i++) {
             int rand_gender = ThreadLocalRandom.current().nextInt(0, 2);
             id_student += ThreadLocalRandom.current().nextInt(1, 20);
-            String insertQuery = "INSERT INTO student (id_student, name, surname, gpa, age, gender, year, athletic, scholarship) values (?,?,?,?,?,?,?,?,?)";
+            String insertQuery = "INSERT INTO student (id_student, name, surname, gpa, age, gender, year, athletic, scholarship, password, email) values (?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement pst = dbConnection.prepareStatement(insertQuery);
             pst.setInt(1, id_student);
+            pst.setString(11, String.valueOf(id_student).concat("@troy.edu"));
             pst.setString(3, surnames[ThreadLocalRandom.current().nextInt(0, surnames.length)]);
             int age = ThreadLocalRandom.current().nextInt(18, 30);
             pst.setInt(5, age);
@@ -46,10 +47,14 @@ public class StudentsGenerator {
             else pst.setBoolean(9, false);
             if (rand_gender == 0) {
                 pst.setString(6, String.valueOf('M'));
-                pst.setString(2, male_names[ThreadLocalRandom.current().nextInt(0, male_names.length)]);
+                String name = male_names[ThreadLocalRandom.current().nextInt(0, male_names.length)];
+                pst.setString(2, name);
+                pst.setInt(10, name.hashCode());
             } else {
                 pst.setString(6, String.valueOf('F'));
-                pst.setString(2, female_names[ThreadLocalRandom.current().nextInt(0, female_names.length)]);
+                String name = female_names[ThreadLocalRandom.current().nextInt(0, female_names.length)];
+                pst.setString(2, name);
+                pst.setInt(10, name.hashCode());
             }
             pst.execute();
         }

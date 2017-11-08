@@ -24,7 +24,7 @@ public class Manager {
                 throw new Exception("Student doesn't found in the databse");
             } else {
                 Student student = new Student(result.getInt(1), result.getString(2), result.getString(3), result.getString(6).charAt(0),
-                        result.getInt(5), result.getBigDecimal(4), Year.valueOf(result.getString(7)), result.getBoolean(8), result.getBoolean(9));
+                        result.getInt(5), result.getBigDecimal(4), Year.valueOf(result.getString(7)), result.getBoolean(8), result.getBoolean(9), String.valueOf(result.getInt(10)), result.getString(11));
                 if ((student.getAge() < 19 && !student.isAthletic()) || student.isFullScholarship())
                     ret = MAX_PUNTUATION;
                 else if (student.getYear().equals(Year.FRESHMAN))
@@ -47,7 +47,7 @@ public class Manager {
             int ret;
             while (result.next()) {
                 Student student = new Student(result.getInt(1), result.getString(2), result.getString(3), result.getString(6).charAt(0),
-                        result.getInt(5), result.getBigDecimal(4), Year.valueOf(result.getString(7)), result.getBoolean(8), result.getBoolean(9));
+                        result.getInt(5), result.getBigDecimal(4), Year.valueOf(result.getString(7)), result.getBoolean(8), result.getBoolean(9), String.valueOf(result.getInt(10)), result.getString(11));
                 if ((student.getAge() < 19 && !student.isAthletic()) || student.isFullScholarship())
                     ret = MAX_PUNTUATION;
                 else if (student.getYear().equals(Year.FRESHMAN))

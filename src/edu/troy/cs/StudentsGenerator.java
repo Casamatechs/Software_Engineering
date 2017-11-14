@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class StudentsGenerator {
 
     private static String[] male_names = {"Zack", "Troy", "Bikash", "Kavarus", "Matt", "Justin", "Will", "Trey", "Zach", "Chase", "Michael", "Daniel", "Jacob", "Tyler", "Cooper", "Erik", "Julius", "Donald", "Kobe", "Stephen", "Andrew", "Kyrie", "Marc", "Pedro", "Leandro", "Luke", "Devin", "Kevin", "George", "Abraham", "Anthony", "Chris", "Russell"};
-    private static String[] female_names = {"Elizabeth", "Emma", "Marissa", "Olivia", "Hannah", "Heather", "Emily", "Lily", "Victoria", "Addie", "Savannah", "Holly", "Morgan", "Megan", "Ashley", "Molly", "Jennifer", "Natalie", "Brittany", "Caroline", "MacKenzie", "Jena", "Hayley", "Maria", "Alicia", "Nancy", "Matea", "Tina", "Diana", "Courtney"};
+    private static String[] female_names = {"Elizabeth", "Emma", "Marissa", "Olivia", "Hannah", "Heather", "Emily", "Lily", "Victoria", "Addie", "Savannah", "Holly", "Morgan", "Megan", "Ashley", "Molly", "Jennifer", "Natalie", "Brittany", "Caroline", "MacKenzie", "Jena", "Hayley", "Maria", "Alicia", "Nancy", "Matea", "Tina", "Diana", "Courtney", "April"};
     private static String[] surnames = {"Harrell", "Moore", "Knopps", "Erskine", "Goodson", "Wisenhunt", "Brock", "Bradley", "Trimble", "Kane", "Cole", "Trusty", "Zucher", "Plump", "Phillips", "Dubos", "Pearce", "Robinson", "Ledbetter", "Robinson", "Rife", "Monsees", "Loklier", "Kaye", "Hilton", "Newman", "Heath", "Ainsworth", "Woods", "Brown", "Jacob", "Williams", "Mac", "Lewis", "Sandfler", "Boggus", "Goodson", "Whigham", "Jernigan", "Henson", "Walker", "Morris", "Potter", "Weasly", "Pearce", "Tomlin", "Mills", "Hoff"};
 
     public static void generator() throws SQLException, IOException, ClassNotFoundException {

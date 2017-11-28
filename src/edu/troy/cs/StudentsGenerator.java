@@ -1,10 +1,12 @@
 package edu.troy.cs;
 
 import edu.troy.cs.connector.DBConnector;
+import edu.troy.cs.exceptions.StudentConnectionException;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.*;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class StudentsGenerator {
@@ -60,14 +62,38 @@ public class StudentsGenerator {
         }
     }
 
+    public static void reservationsGenerator() throws SQLException, IOException, ClassNotFoundException, StudentConnectionException {
+        Connection dbConnection = DBConnector.getConnection();
+        String getBuildings = "SELECT id_building FROM building";
+        Statement st = dbConnection.createStatement();
+        ResultSet resultSet = st.executeQuery(getBuildings);
+        String [] bldings = new String[12];
+        int cnt = 0;
+        while(resultSet.next()){
+            bldings[cnt] = resultSet.getString(1);
+            cnt++;
+        }
+        String getStudents = "SELECT * FROM student LIMIT 2000";
+        ResultSet result = st.executeQuery(getStudents);
+        while(result.next()){
+            Student stnt = new Student(result.getInt(1), result.getString(2), result.getString(3), result.getString(6).charAt(0),
+                    result.getInt(5), result.getBigDecimal(4), Year.valueOf(result.getString(7)), result.getBoolean(8), result.getBoolean(9), String.valueOf(result.getInt(10)), result.getString(11));
+            int [] randomNmb = new Random().ints(0,12).distinct().limit(5).toArray();
+            String [] selBuil = {bldings[randomNmb[0]], bldings[randomNmb[1]], bldings[randomNmb[2]], bldings[randomNmb[3]], bldings[randomNmb[4]]};
+            stnt.doReservation(selBuil);
+        }
+    }
+
     public static void main(String[] args) {
         try {
-            generator();
+            reservationsGenerator();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (StudentConnectionException e) {
             e.printStackTrace();
         }
     }

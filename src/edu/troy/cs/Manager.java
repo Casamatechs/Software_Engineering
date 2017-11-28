@@ -64,4 +64,8 @@ public class Manager {
             throw new StudentConnectionException("The connection with the database failed");
         }
     }
+
+    public void assignRooms(){
+        //TODO
+    }
 }

@@ -6,6 +6,7 @@ import edu.troy.cs.exceptions.StudentConnectionException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Student {
 
@@ -101,22 +102,33 @@ public class Student {
     }
 
     public void doReservation(String[] buildings) {
+        String [] validB = buildingValid(buildings);
         String checkIDinDB = "SELECT * FROM reservation WHERE reservation.id_student = ".concat(String.valueOf(this.id));
-        Statement st = null;
         try {
-            st = dbConnection.createStatement();
+            Statement st = dbConnection.createStatement();
             ResultSet result = st.executeQuery(checkIDinDB);
             if (!result.first()) {
                 String insertQuery = "INSERT INTO reservation (id_student, building_1, building_2, building_3, building_4, building_5) values (?,?,?,?,?,?)";
                 PreparedStatement pst = dbConnection.prepareStatement(insertQuery);
                 pst.setInt(1,this.id);
                 for(int i = 2; i < 7; i++){
-                    pst.setString(i,buildings[i-2]);
+                    if(i < validB.length+2) pst.setString(i,validB[i-2]);
+                    else pst.setString(i,null);
                 }
                 pst.execute();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private String [] buildingValid(String [] building){
+        ArrayList<String> ret = new ArrayList<>();
+        for (String b : building) {
+            if ((b.equals("GAR") || b.equals("HIL")) && this.gender == 'F');
+            else if ((b.equals("PAD") || b.equals("COW") || b.equals("HAM")) && this.gender == 'M');
+            else ret.add(b);
+        }
+        return ret.toArray(new String[0]);
     }
 }

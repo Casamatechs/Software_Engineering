@@ -3,11 +3,10 @@ package edu.troy.cs;
 import edu.troy.cs.connector.DBConnector;
 import edu.troy.cs.exceptions.StudentConnectionException;
 
+import javax.swing.plaf.nimbus.State;
+import java.io.IOException;
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 public class Manager {
 
@@ -65,7 +64,67 @@ public class Manager {
         }
     }
 
-    public void assignRooms(){
+    public void assignRooms() {
         //TODO
+        try {
+            Connection dbConnection = DBConnector.getConnection();
+            String getReservations = "SELECT reservation.*, student.gender, student.puntuation FROM housing.student, housing.reservation WHERE student.id_student = reservation.id_student ORDER BY student.puntuation DESC";
+            Statement st = dbConnection.createStatement();
+            ResultSet resultReservationsQuery = st.executeQuery(getReservations);
+            while (resultReservationsQuery.next()) {
+                boolean assigned = false;
+                int i = 2;
+                while (!assigned && i <= 6) {
+                    String bld = resultReservationsQuery.getString(i);
+                    if(bld == null) break;
+                    String getDorms = "SELECT * FROM housing.room as `rooms` LEFT JOIN (housing.assigments as `assigments`) ON (assigments.room = rooms.id_room) WHERE rooms.BUILDING = '".concat(bld).concat("'");
+                    Statement st2 = dbConnection.createStatement();
+                    ResultSet resultJoinQuery = st2.executeQuery(getDorms);
+                    while (resultJoinQuery.next() && !assigned) {
+                        if (resultJoinQuery.getString(5) == null) {
+                            String insertNewRowAssigment = "INSERT INTO assigments (room, student1) values (?,?)";
+                            PreparedStatement pst = dbConnection.prepareStatement(insertNewRowAssigment);
+                            pst.setString(1, resultJoinQuery.getString(1));
+                            pst.setInt(2, resultReservationsQuery.getInt(1));
+                            pst.execute();
+                            assigned = true;
+                        } else {
+                            //TODO Situación en la que ya hay alguien en la habitacion. Hay que comprobar capacidad y demás.
+                            String genderCheck = "SELECT student.gender FROM housing.student WHERE student.id_student = " + resultJoinQuery.getInt(6);
+                            Statement stGender = dbConnection.createStatement();
+                            ResultSet rGender = stGender.executeQuery(genderCheck);
+                            char genderSt1='N';
+                            while(rGender.next()) genderSt1 = rGender.getString(1).charAt(0);
+                            if (resultReservationsQuery.getString(7).charAt(0) != genderSt1) continue;
+                            int capacityAv = resultJoinQuery.getInt(2) - 1;
+                            if (capacityAv == 0) continue;
+                            int j = 7;
+                            while (!assigned && j <= 9 && capacityAv > 0) {
+                                if (resultJoinQuery.getString(j) == null) {
+                                    String room = resultJoinQuery.getString(1);
+                                    String upAssig = "UPDATE assigments SET student"+(j-5)+" = ? WHERE assigments.room = '"+resultJoinQuery.getString(1)+"'";
+                                    PreparedStatement upAss = dbConnection.prepareStatement(upAssig);
+                                    upAss.setInt(1,resultReservationsQuery.getInt(1));
+                                    upAss.execute();
+                                    assigned = true;
+                                } else {
+                                    j++;
+                                    capacityAv--;
+                                }
+                            }
+                        }
+                    }
+                    i++;
+                }
+                if (assigned) {
+                    /*String deleteReservation = "DELETE FROM reservation WHERE id_student = ?";
+                    PreparedStatement deleteSt = dbConnection.prepareStatement(deleteReservation);
+                    deleteSt.setInt(1, resultReservationsQuery.getInt(1));
+                    deleteSt.execute();*/
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

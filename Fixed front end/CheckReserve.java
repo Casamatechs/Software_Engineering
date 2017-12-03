@@ -161,15 +161,15 @@ public class CheckReserve extends javax.swing.JFrame { // constructor
             //pst.setString(1, Login_iframe.user);
             ResultSet rs = pst.executeQuery();
             
-            if(rs.next()){
+            //if(rs.next()){
                 
                 jTable1.setModel(DbUtils.resultSetToTableModel(rs));
                 
-            }
-            else{
-                JOptionPane.showMessageDialog(null, "Reservation has not been made yet!");
+            //}
+            //else{
+            //    JOptionPane.showMessageDialog(null, "Reservation has not been made yet!");
             
-            }
+            //}
         }catch ( Exception e){
              
        }

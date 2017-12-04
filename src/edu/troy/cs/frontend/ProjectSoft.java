@@ -3,7 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package LoginSystem;
+package edu.troy.cs.frontend;
+
+import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  *
@@ -11,7 +14,7 @@ package LoginSystem;
  */
 public class ProjectSoft {
     
-     public static void main(String[] args) {
+     public static void main(String[] args) throws SQLException, IOException, ClassNotFoundException {
         
         new Login_iframe(null, true).show();
     }

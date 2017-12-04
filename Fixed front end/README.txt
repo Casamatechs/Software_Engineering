@@ -4,4 +4,4 @@
 	2. JDK 1.8
 	3. rs2xml.jar (in order to display the table)
 	4. MySQL JDBC Driver - mysql-connector-java-5.1.23-bin.jar
-	5. Include persistance.xml in the source folder.
+- Include persistance.xml in the source folder.

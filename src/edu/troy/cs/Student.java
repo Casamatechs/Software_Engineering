@@ -122,6 +122,27 @@ public class Student {
         }
     }
 
+    public void updateReservation(String[] buildings) {
+        String [] validB = buildingValid(buildings);
+        String checkIDinDB = "SELECT * FROM reservation WHERE reservation.id_student = ".concat(String.valueOf(this.id));
+        try {
+            Statement st = dbConnection.createStatement();
+            ResultSet result = st.executeQuery(checkIDinDB);
+            if (result.first()) {
+                String insertQuery = "UPDATE reservation SET building_1=?, building_2=?, building_3=?, building_4=?, building_5=? WHERE id_student=".concat(String.valueOf(this.id));
+                PreparedStatement pst = dbConnection.prepareStatement(insertQuery);
+                pst.setInt(1,this.id);
+                for(int i = 1; i < 6; i++){
+                    if(i < validB.length+1) pst.setString(i,validB[i-1]);
+                    else pst.setString(i,null);
+                }
+                pst.execute();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private String [] buildingValid(String [] building){
         ArrayList<String> ret = new ArrayList<>();
         for (String b : building) {

@@ -41,7 +41,7 @@ public class CheckReserve extends javax.swing.JFrame { // constructor
 
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("housing?zeroDateTimeBehavior=convertToNullPU").createEntityManager();
         String id=Login_iframe.user.toString();
-        rsPendingQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT r FROM RsPending r");
+        rsPendingQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT * FROM reservation");
         rsPendingList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : rsPendingQuery.getResultList();
         jPanel1 = new javax.swing.JPanel();
         txt_exit = new javax.swing.JButton();
@@ -158,7 +158,7 @@ public class CheckReserve extends javax.swing.JFrame { // constructor
 
     private void txt_viewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_viewActionPerformed
        
-        String sql = "select * from rs_pending ";
+        String sql = "select * from reservation ";
         try{
             
             PreparedStatement pst = conn.prepareStatement(sql);

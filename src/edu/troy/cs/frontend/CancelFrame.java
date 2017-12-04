@@ -147,7 +147,7 @@ public class CancelFrame extends javax.swing.JFrame {
     private void txt_yesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_yesActionPerformed
 
         try{
-            String sql = "Delete from rs_pending where ID=?";
+            String sql = "Delete from reservation where id_student=?";
             pst = conn.prepareStatement(sql);
             
             pst.setString(1, Login_iframe.user);

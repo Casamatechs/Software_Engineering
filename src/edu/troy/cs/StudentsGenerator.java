@@ -3,6 +3,7 @@ package edu.troy.cs;
 import edu.troy.cs.connector.DBConnector;
 import edu.troy.cs.exceptions.StudentConnectionException;
 
+import javax.swing.plaf.nimbus.State;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.*;
@@ -82,6 +83,29 @@ public class StudentsGenerator {
             String [] selBuil = {bldings[randomNmb[0]], bldings[randomNmb[1]], bldings[randomNmb[2]], bldings[randomNmb[3]], bldings[randomNmb[4]]};
             stnt.doReservation(selBuil);
         }
+    }
+
+    public static Student getStudentWithID(String id){
+        Student rt = null;
+        try {
+            Connection dbConnection = DBConnector.getConnection();
+            String qr = "SELECT * FROM student WHERE id_student = ".concat(id);
+            Statement st = dbConnection.createStatement();
+            ResultSet rs = st.executeQuery(qr);
+            while(rs.next()){
+                rt = new Student(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(6).charAt(0),
+                        rs.getInt(5), rs.getBigDecimal(4), Year.valueOf(rs.getString(7)), rs.getBoolean(8), rs.getBoolean(9), String.valueOf(rs.getInt(10)), rs.getString(11));
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (StudentConnectionException e) {
+            e.printStackTrace();
+        }
+        return rt;
     }
 
     public static void main(String[] args) {

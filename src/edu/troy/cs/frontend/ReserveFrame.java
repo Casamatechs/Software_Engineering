@@ -5,12 +5,12 @@
  */
 package edu.troy.cs.frontend;
 
+import edu.troy.cs.Student;
+import edu.troy.cs.StudentsGenerator;
 import edu.troy.cs.connector.DBConnector;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import javax.swing.JOptionPane;
 
 /**
@@ -196,10 +196,23 @@ public class ReserveFrame extends javax.swing.JFrame {
     private void txt_okActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_okActionPerformed
         try{
 
-
+            Student student = StudentsGenerator.getStudentWithID(Login_iframe.user);
+            String [] builds = {txt_OptionA.getSelectedItem().toString(), txt_OptionB.getSelectedItem().toString(), txt_OptionC.getSelectedItem().toString(), txt_OptionD.getSelectedItem().toString(), txt_OptionE.getSelectedItem().toString()};
+            Connection dbc = DBConnector.getConnection();
+            Statement st = dbc.createStatement();
+            int i = 0;
+            for(String bl : builds) {
+                String query = "SELECT id_building FROM building WHERE name = '".concat(bl).concat("'");
+                ResultSet rst = st.executeQuery(query);
+                while(rst.next()){
+                    builds[i] = rst.getString(1);
+                }
+                i++;
+            }
+            student.doReservation(builds);
             
             
-            String sql = "Insert into rs_pending (ID, Option1, Option2, Option3, Option4, Option5) values (?,?,?,?,?,?)";
+            /*String sql = "Insert into rs_pending (ID, Option1, Option2, Option3, Option4, Option5) values (?,?,?,?,?,?)";
             pst = conn.prepareStatement(sql);
            
             pst.setString(1, Login_iframe.user);
@@ -209,7 +222,7 @@ public class ReserveFrame extends javax.swing.JFrame {
             pst.setString(5, txt_OptionD.getSelectedItem().toString());
             pst.setString(6, txt_OptionE.getSelectedItem().toString());
            
-            pst.execute();
+            pst.execute();*/
             JOptionPane.showMessageDialog(null, "Your reservation request has been saved!");
         }
         catch(Exception e){

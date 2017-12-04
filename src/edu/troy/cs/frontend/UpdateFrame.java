@@ -6,12 +6,11 @@
 package edu.troy.cs.frontend;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import javax.swing.JOptionPane;
 
+import edu.troy.cs.Student;
+import edu.troy.cs.StudentsGenerator;
 import edu.troy.cs.connector.DBConnector;
 import net.proteanit.sql.DbUtils;
 
@@ -289,8 +288,24 @@ public class UpdateFrame extends javax.swing.JFrame {
 
     private void txt_okActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_okActionPerformed
         try{
-            String update_id = Login_iframe.user;
-            String sql = "Update rs_pending set Option1=?, Option2=?, Option3=?, Option4=?, Option5=? where ID="+update_id;
+
+            Student student = StudentsGenerator.getStudentWithID(Login_iframe.user);
+            String [] builds = {txt_OptionA.getSelectedItem().toString(), txt_OptionB.getSelectedItem().toString(), txt_OptionC.getSelectedItem().toString(), txt_OptionD.getSelectedItem().toString(), txt_OptionE.getSelectedItem().toString()};
+            Connection dbc = DBConnector.getConnection();
+            Statement st = dbc.createStatement();
+            int i = 0;
+            for(String bl : builds) {
+                String query = "SELECT id_building FROM building WHERE name = '".concat(bl).concat("'");
+                ResultSet rst = st.executeQuery(query);
+                while(rst.next()){
+                    builds[i] = rst.getString(1);
+                }
+                i++;
+            }
+            student.updateReservation(builds);
+
+            /*String update_id = Login_iframe.user;
+            String sql = "Update reservation set building_1=?, building_2=?, building_3=?, building_4=?, building_5=? where ID="+update_id;
             pst = conn.prepareStatement(sql);
 
             //pst.setString(1, Login_iframe.user);
@@ -300,7 +315,7 @@ public class UpdateFrame extends javax.swing.JFrame {
             pst.setString(4, txt_OptionD.getSelectedItem().toString());
             pst.setString(5, txt_OptionE.getSelectedItem().toString());
 
-            pst.executeUpdate();
+            pst.executeUpdate();*/
             JOptionPane.showMessageDialog(null, "Your reservation request has been updated!");
         }
         catch(Exception e){
@@ -323,7 +338,7 @@ public class UpdateFrame extends javax.swing.JFrame {
 
     private void txt_viewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_viewActionPerformed
 
-        String sql = "select * from rs_pending where ID=?";
+        String sql = "select * from reservation where ID=?";
         try{
 
             PreparedStatement pst = conn.prepareStatement(sql);
